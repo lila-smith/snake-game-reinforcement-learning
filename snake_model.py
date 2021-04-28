@@ -22,7 +22,7 @@ class GameBoard:
         for row in range(self._side):
             for col in range(self._side):
                 if row == 0 or row == self._side - 1 \
-                or col == 0 or row == self._side - 1:
+                or col == 0 or col == self._side - 1:
                     self._board_array[row][col] = Border()
                 elif row == col == math.ceil(self._side / 2):
                     self._board_array[row][col] = SnakeHead()
@@ -82,6 +82,7 @@ class Object(ABC):
         pass
     
     @property
+    @abstractmethod
     def color(self):
         """
         
@@ -104,7 +105,7 @@ class Apple(Object):
         """
         
         """
-        return _color
+        return (255, 0, 0)
 
     
 class Blank(Object):
@@ -122,7 +123,7 @@ class Blank(Object):
         """
         
         """
-        return _color
+        return (255, 255, 255)
 
     
 class Border(Object):
@@ -140,7 +141,7 @@ class Border(Object):
         """
         
         """
-        return _color
+        return (0, 0, 0)
     
     
 class SnakeHead(Object):
@@ -158,7 +159,7 @@ class SnakeHead(Object):
         """
         
         """
-        return _color
+        return (0, 255, 0)
 
     
 class SnakeTail(Object):
@@ -176,4 +177,4 @@ class SnakeTail(Object):
         """
 
         """
-        return _color
+        return (0, 255, 0)
