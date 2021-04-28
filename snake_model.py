@@ -87,6 +87,7 @@ class Object(ABC):
         pass
     
     @property
+    @abstractmethod
     def color(self):
         """
         
@@ -109,7 +110,7 @@ class Apple(Object):
         """
         
         """
-        return _color
+        return (255, 0, 0)
 
     
 class Blank(Object):
@@ -127,7 +128,7 @@ class Blank(Object):
         """
         
         """
-        return _color
+        return (255, 255, 255)
 
     
 class Border(Object):
@@ -145,7 +146,7 @@ class Border(Object):
         """
         
         """
-        return _color
+        return (0, 0, 0)
     
     
 class SnakeHead(Object):
@@ -163,7 +164,7 @@ class SnakeHead(Object):
         """
         
         """
-        return _color
+        return (0, 255, 0)
 
     
 class SnakeTail(Object):
@@ -181,4 +182,4 @@ class SnakeTail(Object):
         """
 
         """
-        return _color
+        return (0, 255, 0)
