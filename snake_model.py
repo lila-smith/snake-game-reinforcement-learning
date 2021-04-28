@@ -16,19 +16,19 @@ class GameBoard:
         """
         self._side = side
         self._direction = [-1, 0] #Delta row, delta column
-        self._board_array = [["" for _ in range(self._side)] \
+        self._board_array = [[None for _ in range(self._side)] \
                             for _ in range(self._side)]
 
         for row in range(self._side):
             for col in range(self._side):
                 if row == 0 or row == self._side - 1 \
                 or col == 0 or row == self._side - 1:
-                    self._board_array[row][col] = Border(self._board_array)
+                    self._board_array[row][col] = Border()
                 elif row == col == math.ceil(self._side / 2):
-                    self._board_array[row][col] = SnakeHead(self._board_array)
+                    self._board_array[row][col] = SnakeHead()
                     self._snake = [[row, col]]
                 else:
-                    self._board_array[row][col] = Blank(self._board_array)
+                    self._board_array[row][col] = Blank()
 
     def __repr__(self):
         return self._board_array
@@ -65,51 +65,115 @@ class GameBoard:
     def game_over(self):
         pass
     
-    def get_square(self):
-        pass
+    def get_square(self, row, col):
+        """
+        
+        """
+        return self.board_array[row][col]
     
 
 from abc import ABC, abstractmethod
 class Object(ABC):
-    def __init__(self, board):
-        self._board_array = board
+    def __init__(self):
+        pass
     
     @abstractmethod
-    def interaction(self):
+    def interaction(self, board_instance):
         pass
+    
+    @property
+    def color(self):
+        """
+        
+        """
+        pass
+    
 
 class Apple(Object):
-    def interaction(self):
-        self._board_array.increase_length()
+    
+    _color = (255, 0, 0)
+    
+    def interaction(self, board_instance):
+        board_instance.increase_length()
     
     def __repr__(self):
-        pass
+        return "@"
+    
+    @property
+    def color(self):
+        """
+        
+        """
+        return _color
 
+    
 class Blank(Object):
-    def interaction(self):
-        self._board_array.maintain_velocity()
+    
+    _color = (255, 255, 255)
+    
+    def interaction(self, board_instance):
+        board_instance.maintain_velocity()
     
     def __repr__(self):
-        pass
+        return " "
+    
+    @property
+    def color(self):
+        """
+        
+        """
+        return _color
 
+    
 class Border(Object):
-    def interaction(self):
-        self._board_array.game_over()
+    
+    _color = (0, 0, 0)
+    
+    def interaction(self, board_instance):
+        board_instance.game_over()
     
     def __repr__(self):
-        pass
+        return "#"
 
+    @property
+    def color(self):
+        """
+        
+        """
+        return _color
+    
+    
 class SnakeHead(Object):
-    def interaction(self):
-        self._board_array.increase_length()
+    
+    _color = (0, 255, 0)
+    
+    def interaction(self, board_instance):
+        board_instance.increase_length()
     
     def __repr__(self):
-        pass
+        return "o"
 
-class SnakeTail(Object):
-     def interaction(self):
-        self._board_array.increase_length()
+    @property
+    def color(self):
+        """
+        
+        """
+        return _color
+
     
-     def __repr__(self):
-        pass
+class SnakeTail(Object):
+    
+    _color = (0, 255, 0)
+    
+    def interaction(self, board_instance):
+        board_instance.increase_length()
+    
+    def __repr__(self):
+        return "■"
 
+    @property
+    def color(self):
+        """
+
+        """
+        return _color

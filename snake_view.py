@@ -59,7 +59,7 @@ class PygameView(SnakeView):
         
         for row_index, row in enumerate(self.board.board_array):
             for col_index, item in enumerate(row):
-                pygame.draw.rect(screen, item, (row_index * 10, col_index * 10, scale_factor, scale_factor))
+                pygame.draw.rect(screen, (255, 255, 255), (row_index * 10, col_index * 10, scale_factor, scale_factor))
         
         pygame.display.flip()
         
