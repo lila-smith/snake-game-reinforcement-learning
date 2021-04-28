@@ -1,4 +1,5 @@
 import math
+import random
 
 class GameBoard:
     """
@@ -29,6 +30,7 @@ class GameBoard:
                     self._snake = [[row, col]]
                 else:
                     self._board_array[row][col] = Blank()
+        self.spawn_apple()
 
     def __repr__(self):
         repr_string = ""
@@ -55,18 +57,46 @@ class GameBoard:
         self._direction = direction
 
     def check_next_square(self):
-        snake_head = self._snake[1]
+        snake_head = self._snake[0]
         self.board_array[(snake_head[0] + self.direction[0])] \
-                        [(snake_head[1] + self.direction[1])]
+                        [(snake_head[1] + self.direction[1])] \
+                        .interaction(self)
 
     def maintain_velocity(self):
-        pass
+        # Set up rows and cols to access
+        previous_head = self._snake[0]
+        last_square = self._snake.pop()
+        next_square = [(previous_head[0] + self.direction[0]), \
+                       (previous_head[1] + self.direction[1])]
+        # Mark appropriate squares
+        self.mark_square(last_square[0], last_square[1], Blank())
+        self.mark_square(next_square[0], next_square[1], SnakeHead())
+        if not self._snake == []:
+            self.mark_square(previous_head[0], previous_head[1], SnakeTail())
+        # Update snake list
+        self._snake = [next_square] + self._snake
 
     def increase_length(self):
-        pass
+        # Set up rows and cols to access
+        previous_head = self._snake[0]
+        next_square = [(previous_head[0] + self.direction[0]), \
+                       (previous_head[1] + self.direction[1])]
+        # Mark appropriate squares
+        self.mark_square(next_square[0], next_square[1], SnakeHead())
+        self.mark_square(previous_head[0], previous_head[1], SnakeTail())
+        # Update snake list
+        self._snake = [next_square] + self._snake
+        # Make new apple
+        self.spawn_apple()
     
     def spawn_apple(self):
-        pass
+        blank_indexes = []
+        for row_index, row in enumerate(self.board_array):
+            for col_index, item in enumerate(row):
+                if isinstance(item, Blank):
+                    blank_indexes.append([row_index, col_index])
+        chosen_square = random.choice(blank_indexes)
+        self.mark_square(chosen_square[0], chosen_square[1], Apple())
     
     def game_over(self):
         pass
@@ -75,6 +105,9 @@ class GameBoard:
         """
         """
         return self.board_array[row][col]
+    
+    def mark_square(self, row, col, object_type):
+        self._board_array[row][col] = object_type
     
 
 from abc import ABC, abstractmethod
