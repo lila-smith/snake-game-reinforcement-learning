@@ -22,7 +22,7 @@ class GameBoard:
         for row in range(self._side):
             for col in range(self._side):
                 if row == 0 or row == self._side - 1 \
-                or col == 0 or row == self._side - 1:
+                or col == 0 or col == self._side - 1:
                     self._board_array[row][col] = Border()
                 elif row == col == math.ceil(self._side / 2):
                     self._board_array[row][col] = SnakeHead()
@@ -31,7 +31,13 @@ class GameBoard:
                     self._board_array[row][col] = Blank()
 
     def __repr__(self):
-        return self._board_array
+        repr_string = ""
+        for row in self.board_array:
+            str_temp = ""
+            for item in row:
+                str_temp += repr(item)
+            repr_string += str_temp + "\n"
+        return repr_string
 
     @property    
     def board_array(self):
@@ -67,7 +73,6 @@ class GameBoard:
     
     def get_square(self, row, col):
         """
-        
         """
         return self.board_array[row][col]
     

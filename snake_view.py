@@ -36,7 +36,7 @@ class TextView(SnakeView):
         """
         
         """
-        pass
+        print(self.board)
     
     
 class PygameView(SnakeView):
