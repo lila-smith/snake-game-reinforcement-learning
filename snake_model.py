@@ -15,6 +15,7 @@ class GameBoard:
     def __init__(self, side):
         """
         """
+        self._end_condition = False
         self._side = side
         self._direction = [-1, 0] #Delta row, delta column
         self._board_array = [[None for _ in range(self._side)] \
@@ -52,6 +53,10 @@ class GameBoard:
     @property
     def direction(self):
         return self._direction
+    
+    @property
+    def end_condition(self):
+        return self._end_condition
 
     def change_direction(self, direction):
         self._direction = direction
@@ -99,7 +104,7 @@ class GameBoard:
         self.mark_square(chosen_square[0], chosen_square[1], Apple())
     
     def game_over(self):
-        pass
+        self._end_condition = True
     
     def get_square(self, row, col):
         """
@@ -205,7 +210,7 @@ class SnakeTail(Object):
     _color = (0, 255, 0)
     
     def interaction(self, board_instance):
-        board_instance.increase_length()
+        board_instance.game_over()
     
     def __repr__(self):
         return "■"

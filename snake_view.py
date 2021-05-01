@@ -42,12 +42,12 @@ class TextView(SnakeView):
 class PygameView(SnakeView):
     """
     
-    """
+    """        
     
     def draw(self):
         """
         
-        """
+        """   
         pygame.init()
         
         scale_factor = 30
@@ -55,7 +55,6 @@ class PygameView(SnakeView):
         screen_height = self.board.size * scale_factor
         
         screen = pygame.display.set_mode((screen_width, screen_height))
-        
         
         for row_index, row in enumerate(self.board.board_array):
             for col_index, item in enumerate(row):

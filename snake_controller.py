@@ -1,3 +1,6 @@
+import sys
+import pygame
+
 class SnakePlayer:
     """
     
@@ -20,4 +23,20 @@ class SnakePlayer:
         """
         
         """
-        pass
+        pygame.init()
+        
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+                
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.board.change_direction([0, -1])
+                if event.key == pygame.K_RIGHT:
+                    self.board.change_direction([0, 1])
+                if event.key == pygame.K_UP:
+                    self.board.change_direction([-1, 0])
+                if event.key == pygame.K_DOWN:
+                    self.board.change_direction([1, 0])                    
+        return
