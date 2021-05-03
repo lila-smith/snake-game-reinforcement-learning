@@ -31,12 +31,12 @@ class SnakePlayer:
                 sys.exit()
                 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT and not self.board.direction == [0,1]:
                     self.board.change_direction([0, -1])
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT and not self.board.direction == [0,-1]:
                     self.board.change_direction([0, 1])
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP and not self.board.direction == [1,0]:
                     self.board.change_direction([-1, 0])
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN and not self.board.direction == [-1,0]:
                     self.board.change_direction([1, 0])                    
         return
