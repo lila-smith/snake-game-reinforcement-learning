@@ -26,6 +26,13 @@ class SnakeView(ABC):
         """
         pass
 
+    @abstractmethod
+    def draw_gameover(self):
+        """
+        
+        """
+        pass
+
     
 class TextView(SnakeView):
     """
@@ -80,5 +87,15 @@ class PygameView(SnakeView):
                 pygame.draw.rect(self.screen, item.color, (col_index * self.scale_factor, row_index * self.scale_factor, self.scale_factor, self.scale_factor))
         
         pygame.display.flip()
+
+    def draw_gameover(self):
+        """
+        """
+        font = pygame.font.SysFont(None, 24)
+        img = font.render(f"game over . . . your final length was {self.board.snake_length}", True, (255,0,0))
+        self.screen.fill((0,0,0))
+        self.screen.blit(img, (20, 20))
+        pygame.display.flip()
+
         
         

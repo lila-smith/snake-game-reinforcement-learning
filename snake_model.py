@@ -17,7 +17,7 @@ class GameBoard:
         """
         self._end_condition = False
         self._side = side
-        self._direction = [-1, 0] #Delta row, delta column
+        self._direction = [0, 0] #Delta row, delta column
         self._board_array = [[None for _ in range(self._side)] \
                             for _ in range(self._side)]
 
@@ -58,12 +58,17 @@ class GameBoard:
     def end_condition(self):
         return self._end_condition
 
+    @property
+    def snake_length(self):
+        return len(self._snake)
+
     def change_direction(self, direction):
         self._direction = direction
 
     def check_next_square(self):
         snake_head = self._snake[0]
-        self.board_array[(snake_head[0] + self.direction[0])] \
+        if not self.direction == [0,0]:
+            self.board_array[(snake_head[0] + self.direction[0])] \
                         [(snake_head[1] + self.direction[1])] \
                         .interaction(self)
 

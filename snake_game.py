@@ -20,7 +20,10 @@ def main():
         gameboard.check_next_square()
         graphic_view.draw()
         time.sleep(.2)
-        
+
+    while gameboard.end_condition:
+        controls.get_input()
+        graphic_view.draw_gameover()
     
 if __name__ == "__main__":
     main()
