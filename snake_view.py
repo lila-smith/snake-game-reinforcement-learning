@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import pygame
+from math import ceil
 
 class SnakeView(ABC):
     """
@@ -84,7 +85,25 @@ class PygameView(SnakeView):
         
         for row_index, row in enumerate(self.board.board_array):
             for col_index, item in enumerate(row):
-                pygame.draw.rect(self.screen, item.color, (col_index * self.scale_factor, row_index * self.scale_factor, self.scale_factor, self.scale_factor))
+                rect_temp = pygame.Rect(col_index * self.scale_factor, \
+                                        row_index * self.scale_factor, \
+                                        self.scale_factor, \
+                                        self.scale_factor)
+                pygame.draw.rect(self.screen, item.color, rect_temp)
+
+        head_row = self.board.snake_head[1]
+        head_col = self.board.snake_head[0]
+        direction_hor = self.board.snake_head[0]
+        direction_ver = self.board.direction[1]
+
+        """
+            if direction_ver == 0:
+            pygame.draw.rect(self.screen, [0,0,0], \
+                (ceil((head_col + 0.5 + direction_hor * 0.25) * self.scale_factor), \
+                ceil((head_row + 0.5) * self.scale_factor), \
+                ceil(self.scale_factor * 0.25), \
+                ceil(self.scale_factor * 0.25)))
+        """
         
         pygame.display.flip()
 

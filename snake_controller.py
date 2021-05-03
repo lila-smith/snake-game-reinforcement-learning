@@ -11,6 +11,12 @@ class SnakePlayer:
         pygame.K_UP: [-1,0],
         pygame.K_DOWN: [1,0],
     }
+    opposite = {
+        pygame.K_LEFT: [0, 1],
+        pygame.K_RIGHT: [0, -1],
+        pygame.K_UP: [1,0],
+        pygame.K_DOWN: [-1,0],
+    }
 
 
     def __init__(self, board_instance):
@@ -40,7 +46,7 @@ class SnakePlayer:
             elif event.type == pygame.KEYDOWN:
                 try:
                     if self.board.snake_length == 1 or \
-                    not self.board.direction == -1 * self.key_value[event.key]:
+                    not self.board.direction == self.opposite[event.key]:
                         self.board.change_direction(self.key_value[event.key])
                 except:
                     continue                
