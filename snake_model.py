@@ -140,7 +140,11 @@ class Object(ABC):
 
 class Apple(Object):
     
-    _color = (255, 0, 0)
+    def __init__(self):
+        """
+        
+        """
+        self._color = (255, 0, 0)
     
     def interaction(self, board_instance):
         board_instance.increase_length()
@@ -153,12 +157,16 @@ class Apple(Object):
         """
         
         """
-        return (255, 0, 0)
+        return self._color
 
     
 class Blank(Object):
     
-    _color = (255, 255, 255)
+    def __init__(self):
+        """
+        
+        """
+        self._color = (255, 255, 255)
     
     def interaction(self, board_instance):
         board_instance.maintain_velocity()
@@ -171,12 +179,16 @@ class Blank(Object):
         """
         
         """
-        return (255, 255, 255)
+        return self._color
 
     
 class Border(Object):
     
-    _color = (0, 0, 0)
+    def __init__(self):
+        """
+        
+        """
+        self._color = (0, 0, 0)
     
     def interaction(self, board_instance):
         board_instance.game_over()
@@ -189,12 +201,16 @@ class Border(Object):
         """
         
         """
-        return (0, 0, 0)
+        return self._color
     
     
 class SnakeHead(Object):
     
-    _color = (0, 255, 0)
+    def __init__(self):
+        """
+        
+        """
+        self._color = (0, 255, 0)
     
     def interaction(self, board_instance):
         board_instance.increase_length()
@@ -207,12 +223,16 @@ class SnakeHead(Object):
         """
         
         """
-        return (0, 255, 0)
+        return self._color
 
     
 class SnakeTail(Object):
     
-    _color = (0, 255, 0)
+    def __init__(self):
+        """
+        
+        """
+        self._color = (0, 255, 0)
     
     def interaction(self, board_instance):
         board_instance.game_over()
@@ -225,4 +245,4 @@ class SnakeTail(Object):
         """
 
         """
-        return (0, 255, 0)
+        return self._color
