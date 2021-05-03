@@ -8,7 +8,7 @@ def main():
     """
     
     """
-    gameboard = GameBoard(15)
+    gameboard = GameBoard(20)
     graphic_view = PygameView(gameboard)
     controls = SnakePlayer(gameboard)
     

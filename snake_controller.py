@@ -5,7 +5,14 @@ class SnakePlayer:
     """
     
     """
-    
+    key_value = {
+        pygame.K_LEFT: [0, -1],
+        pygame.K_RIGHT: [0, 1],
+        pygame.K_UP: [-1,0],
+        pygame.K_DOWN: [1,0],
+    }
+
+
     def __init__(self, board_instance):
         """
         
@@ -31,12 +38,10 @@ class SnakePlayer:
                 sys.exit()
                 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT and not self.board.direction == [0,1]:
-                    self.board.change_direction([0, -1])
-                if event.key == pygame.K_RIGHT and not self.board.direction == [0,-1]:
-                    self.board.change_direction([0, 1])
-                if event.key == pygame.K_UP and not self.board.direction == [1,0]:
-                    self.board.change_direction([-1, 0])
-                if event.key == pygame.K_DOWN and not self.board.direction == [-1,0]:
-                    self.board.change_direction([1, 0])                    
+                try:
+                    if self.board.snake_length == 1 or \
+                    not self.board.direction == -1 * self.key_value[event.key]:
+                        self.board.change_direction(self.key_value[event.key])
+                except:
+                    continue                
         return

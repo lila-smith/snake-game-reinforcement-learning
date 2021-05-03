@@ -62,6 +62,10 @@ class GameBoard:
     def snake_length(self):
         return len(self._snake)
 
+    @property
+    def snake_head(self):
+        return self._snake[0]
+
     def change_direction(self, direction):
         self._direction = direction
 
