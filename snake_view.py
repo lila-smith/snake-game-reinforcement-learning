@@ -91,12 +91,23 @@ class PygameView(SnakeView):
                                         self.scale_factor)
                 pygame.draw.rect(self.screen, item.color, rect_temp)
 
+        snake_length = self.board.snake_length
+        buffer = 5
+        for index, square in enumerate(self.board.snake):
+            item = self.board.get_square(square[0], square[1])
+            color_factor = (index + buffer / 2) / (snake_length + buffer)
+            color = [item.color[0], item.color[1], item.color[2]]
+            color = [color_factor * value for value in color]
+            rect_temp = pygame.Rect(square[1] * self.scale_factor, \
+                                        square[0] * self.scale_factor, \
+                                        self.scale_factor, \
+                                        self.scale_factor)
+            pygame.draw.rect(self.screen, color, rect_temp)
+        """
         head_row = self.board.snake_head[1]
         head_col = self.board.snake_head[0]
-        direction_hor = self.board.snake_head[0]
-        direction_ver = self.board.direction[1]
-
-        """
+        direction_hor = self.board.snake[0][0]
+        direction_ver = self.board.direction[0][1]
             if direction_ver == 0:
             pygame.draw.rect(self.screen, [0,0,0], \
                 (ceil((head_col + 0.5 + direction_hor * 0.25) * self.scale_factor), \

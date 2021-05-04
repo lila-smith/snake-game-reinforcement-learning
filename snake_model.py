@@ -1,19 +1,33 @@
+"""
+This file outlines the GameBoard class that creates a model of the snake board
+squares using a 2D list. It also includes the abstract class Object that's
+inheritors are placed in the GameBoard to represent types of squares.
+"""
+
 import math
 import random
 
 class GameBoard:
     """
+    Snake game representation.
+
     Attributes:
-    _board_array: a 2d list containing the one of objects Apple, Blank, Border, SnakeTail, or SnakeHead for each square of the board
-    _snake_direction: current direction of motion
-    _snake: list of snake positions
-    _dimensions: the side length of the board
-    _timestep: time for snake to move one block
-    Maybe move to main.py
+    _end_condition: Boolean representation for if game is over.
+    _board_array: 2D list containing the one of objects (Apple, Blank, Border,
+                  SnakeTail, or SnakeHead) for each square of the board
+    _side: An integer for side length of the board in squares.
+    _snake: List of ordered Snake positions (from head to end of tail).
+    _direction: A list for current direction of motion referring to
+                _board_array indices.
     """
 
     def __init__(self, side):
         """
+        Initializes GameBoard with SnakeHead in center, a randomly spawned
+        Apple, Border, and Blank instances.
+
+        Args:
+            side: An integer length of GameBoard. Includes borders. 
         """
         self._end_condition = False
         self._side = side
@@ -34,6 +48,9 @@ class GameBoard:
         self.spawn_apple()
 
     def __repr__(self):
+        """
+        Iterates through GameBoard to represent each square as part of string.
+        """
         repr_string = ""
         for row in self.board_array:
             str_temp = ""
@@ -63,13 +80,26 @@ class GameBoard:
         return len(self._snake)
 
     @property
-    def snake_head(self):
-        return self._snake[0]
+    def snake(self):
+        return self._snake
 
     def change_direction(self, direction):
+        """
+        Switches current direction to input. Any input outside of the specified
+        may result in abnormal snake behavior.
+
+        Args:
+            direction: A two-element list that is one of the following: [1,0],
+                       [-1,0], [0,1], or [0,-1].
+        """
         self._direction = direction
 
     def check_next_square(self):
+        """
+        Moves snake in direction and interacts with the next square. The
+        interaction will result in maintained velocity, increased length,
+        or game over.
+        """
         snake_head = self._snake[0]
         if not self.direction == [0,0]:
             self.board_array[(snake_head[0] + self.direction[0])] \
@@ -77,6 +107,13 @@ class GameBoard:
                         .interaction(self)
 
     def maintain_velocity(self):
+        """
+        Moves snake one block forward. 
+        
+        Removes last snake entry, changes current SnakeHead instance to
+        SnakeTail instance, and adds new SnakeHead instance. Interaction is
+        called when next square is Blank instance.
+        """
         # Set up rows and cols to access
         previous_head = self._snake[0]
         last_square = self._snake.pop()
@@ -91,6 +128,13 @@ class GameBoard:
         self._snake = [next_square] + self._snake
 
     def increase_length(self):
+        """
+        Moves snake one block forward and increases length by one. 
+        
+        Changes current SnakeHead instance to SnakeTail instance and adds new
+        SnakeHead instance in front. Interaction is called when next square is
+        Apple instance.
+        """
         # Set up rows and cols to access
         previous_head = self._snake[0]
         next_square = [(previous_head[0] + self.direction[0]), \
@@ -104,6 +148,9 @@ class GameBoard:
         self.spawn_apple()
     
     def spawn_apple(self):
+        """
+        Randomly chooses a Blank instance to turn into an Apple instance.
+        """
         blank_indexes = []
         for row_index, row in enumerate(self.board_array):
             for col_index, item in enumerate(row):
@@ -113,14 +160,33 @@ class GameBoard:
         self.mark_square(chosen_square[0], chosen_square[1], Apple())
     
     def game_over(self):
+        """
+        Ends game.
+
+        Changes end condition to True. Interaction is called when next square
+        is Border or SnakeTail instance.
+        """
         self._end_condition = True
     
     def get_square(self, row, col):
         """
+        Returns the Object instance in specified row and column.
+
+        Args:
+            row: Integer less than _side for first index of _board_array.
+            col: Integer less than _side for second index of _board_array.
         """
         return self.board_array[row][col]
     
     def mark_square(self, row, col, object_type):
+        """
+        Changes the Object in specified row and column.
+
+        Args:
+            row: Integer less than _side for first index of _board_array.
+            col: Integer less than _side for second index of _board_array.
+            object_type: An instance of inheritor of Object.
+        """
         self._board_array[row][col] = object_type
     
 
