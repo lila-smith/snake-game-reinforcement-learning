@@ -16,8 +16,14 @@ def main():
     
 
     while not gameboard.end_condition:
-        controls.check_to_exit()
-        controls.get_input()
+        
+        while controls.check_input_list():
+            controls.check_to_exit()
+            controls.get_input()
+            gameboard.check_next_square()
+            graphic_view.draw()
+            time.sleep(.2)
+            
         gameboard.check_next_square()
         graphic_view.draw()
         time.sleep(.2)
