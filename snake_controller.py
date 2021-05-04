@@ -51,3 +51,10 @@ class SnakePlayer:
             except:
                 pass
         return
+    
+    def check_to_exit(self):
+        """
+        
+        """
+        if pygame.event.peek(pygame.QUIT):
+            sys.exit()

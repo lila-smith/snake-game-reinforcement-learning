@@ -16,13 +16,14 @@ def main():
     
 
     while not gameboard.end_condition:
+        controls.check_to_exit()
         controls.get_input()
         gameboard.check_next_square()
         graphic_view.draw()
         time.sleep(.2)
 
     while gameboard.end_condition:
-        controls.get_input()
+        controls.check_to_exit()
         graphic_view.draw_gameover()
     
 if __name__ == "__main__":
