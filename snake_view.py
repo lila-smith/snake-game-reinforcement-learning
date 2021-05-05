@@ -92,7 +92,7 @@ class PygameView(SnakeView):
                 pygame.draw.rect(self.screen, item.color, rect_temp)
 
         snake_length = self.board.snake_length
-        buffer = 5
+        buffer = 20 #Higher buffer means lighter snake in general
         for index, square in enumerate(self.board.snake):
             item = self.board.get_square(square[0], square[1])
             color_factor = (index + buffer / 2) / (snake_length + buffer)
@@ -103,18 +103,40 @@ class PygameView(SnakeView):
                                         self.scale_factor, \
                                         self.scale_factor)
             pygame.draw.rect(self.screen, color, rect_temp)
-        """
-        head_row = self.board.snake_head[1]
-        head_col = self.board.snake_head[0]
-        direction_hor = self.board.snake[0][0]
-        direction_ver = self.board.direction[0][1]
-            if direction_ver == 0:
-            pygame.draw.rect(self.screen, [0,0,0], \
-                (ceil((head_col + 0.5 + direction_hor * 0.25) * self.scale_factor), \
-                ceil((head_row + 0.5) * self.scale_factor), \
-                ceil(self.scale_factor * 0.25), \
-                ceil(self.scale_factor * 0.25)))
-        """
+
+        padding = 0.2
+        eye_color = (200,200,0)
+        eye_size = 0.125
+        head_row = self.board.snake[0][0]
+        head_col = self.board.snake[0][1]
+        direction_ver = self.board.direction[0]
+        direction_hor = self.board.direction[1]
+        if direction_hor != 0:
+            x_ver = ceil((head_col + 0.5 - eye_size + 0.125 * direction_hor) * self.scale_factor)
+            y_ver = ceil((head_row + padding) * self.scale_factor)
+            pygame.draw.rect(self.screen, eye_color,
+            (x_ver,
+            y_ver,
+            ceil(self.scale_factor * eye_size),
+            ceil(self.scale_factor * eye_size)))
+            pygame.draw.rect(self.screen, eye_color,
+            (x_ver,
+            y_ver + (1 - 3 * padding) * self.scale_factor,
+            ceil(self.scale_factor * eye_size),
+            ceil(self.scale_factor * eye_size)))
+        elif direction_ver != 0:
+            x_ver = ceil((head_col + padding) * self.scale_factor)
+            y_ver = ceil((head_row + .5 - eye_size + padding * direction_ver) * self.scale_factor) 
+            pygame.draw.rect(self.screen, eye_color,
+            (x_ver, 
+            y_ver,
+            ceil(self.scale_factor * eye_size), 
+            ceil(self.scale_factor * eye_size)))
+            pygame.draw.rect(self.screen, eye_color,
+            (x_ver + (1 - 3 * padding) * self.scale_factor,
+            y_ver,
+            ceil(self.scale_factor * eye_size),
+            ceil(self.scale_factor * eye_size)))
         
         pygame.display.flip()
 
