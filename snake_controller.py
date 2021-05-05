@@ -36,9 +36,6 @@ class SnakePlayer:
         """
 
         """
-        pygame.init()
-
-
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
             sys.exit()
@@ -64,3 +61,19 @@ class SnakePlayer:
         
         """
         return pygame.event.peek(event_type)
+    
+    def get_restart_input(self):
+        """
+        
+        """
+        event = pygame.event.poll()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_y:
+                return True
+
+            elif event.key == pygame.K_n:
+                sys.exit()
+        return None
+            
+            

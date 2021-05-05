@@ -120,29 +120,40 @@ class PygameView(SnakeView):
 
     def draw_gameover(self):
         """
+        
         """
-        font = pygame.font.SysFont(None, 24)
-        img = font.render(f"game over . . . your final length was {self.board.snake_length}", True, (255,0,0))
+        line_1_location = self.scale_factor * self.board.size / 2, self.scale_factor * self.board.size / 4
+        line_2_location = self.scale_factor * self.board.size / 2, line_1_location[1] + 50
+        line_3_location = self.scale_factor * self.board.size / 2, self.scale_factor * self.board.size / 2
+        
+        font_game_over = pygame.font.SysFont(None, 70)
+        font_text = pygame.font.SysFont(None, 35)
+        
+        end_msg_line_1 = font_game_over.render(f"GAME OVER", True, (255,0,0))
+        end_msg_line_2 = font_text.render(f"Your final length was {self.board.snake_length}", True, (255, 0, 0))
+        restart_msg = font_text.render("Restart? ( y / n )", True, (255, 0, 0))
+        
         self.screen.fill((0,0,0))
-        self.screen.blit(img, (20, 20))
+        
+        self.screen.blit(end_msg_line_1, end_msg_line_1.get_rect(center = line_1_location))
+        self.screen.blit(end_msg_line_2, end_msg_line_2.get_rect(center = line_2_location))
+        self.screen.blit(restart_msg, restart_msg.get_rect(center = line_3_location))
+        
         pygame.display.flip()
         
     def start_text(self):
         """
         
         """
-        location = 38, floor(self.board.size / 4 * self.scale_factor)
+        location = self.scale_factor * self.board.size / 2, floor(self.board.size / 4 * self.scale_factor)
         
         font = pygame.font.SysFont(None, 45)
+        
         start_text = font.render(f"Press an Arrow Key to Start Moving", True, (255, 0, 0))
-        text_background = start_text.get_rect()
-        text_background.move_ip(location)
+        text_background = start_text.get_rect(center = location)
         
         pygame.draw.rect(self.screen, (0, 0, 0), text_background)
-
-        self.screen.blit(start_text, location)
+        self.screen.blit(start_text, text_background)
         
         pygame.display.update()
-
-        
         

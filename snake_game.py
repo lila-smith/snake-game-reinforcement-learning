@@ -42,8 +42,11 @@ def main():
         time.sleep(.2)
 
     while gameboard.end_condition:
-        controls.check_to_exit()
         graphic_view.draw_gameover()
+        if controls.get_restart_input() is True:
+            main()
+        controls.check_to_exit()
+        
     
 if __name__ == "__main__":
     main()
