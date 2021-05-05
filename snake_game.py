@@ -19,20 +19,11 @@ def main():
     controls = SnakePlayer(gameboard)
     
     graphic_view.draw()
-
+    
     pygame.event.clear()
     while not controls.check_input_list(pygame.KEYDOWN):
         graphic_view.start_text()
         controls.check_to_exit()
-        if controls.check_input_list(pygame.KEYDOWN):
-            break
-        time.sleep(1.5)
-        
-        graphic_view.draw()
-        controls.check_to_exit()
-        if controls.check_input_list(pygame.KEYDOWN):
-            break
-        time.sleep(.5)
 
     while not gameboard.end_condition:
         controls.get_input()

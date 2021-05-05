@@ -74,6 +74,6 @@ class SnakePlayer:
 
             elif event.key == pygame.K_n:
                 sys.exit()
-        return None
+        return None                
             
             

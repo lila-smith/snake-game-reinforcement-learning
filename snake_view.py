@@ -147,12 +147,12 @@ class PygameView(SnakeView):
         """
         location = self.scale_factor * self.board.size / 2, floor(self.board.size / 4 * self.scale_factor)
         
-        font = pygame.font.SysFont(None, 45)
+        font = pygame.font.SysFont(None, 30)
         
-        start_text = font.render(f"Press an Arrow Key to Start Moving", True, (255, 0, 0))
+        start_text = font.render(f"Press an Arrow Key to Start Moving", True, (0, 128, 0))
         text_background = start_text.get_rect(center = location)
-        
-        pygame.draw.rect(self.screen, (0, 0, 0), text_background)
+
+        pygame.draw.rect(self.screen, (255, 255, 255), text_background)
         self.screen.blit(start_text, text_background)
         
         pygame.display.update()
