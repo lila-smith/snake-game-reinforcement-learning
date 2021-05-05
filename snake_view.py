@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import pygame
-from math import ceil
+from math import ceil, floor
 
 class SnakeView(ABC):
     """
@@ -126,6 +126,23 @@ class PygameView(SnakeView):
         self.screen.fill((0,0,0))
         self.screen.blit(img, (20, 20))
         pygame.display.flip()
+        
+    def start_text(self):
+        """
+        
+        """
+        location = 38, floor(self.board.size / 4 * self.scale_factor)
+        
+        font = pygame.font.SysFont(None, 45)
+        start_text = font.render(f"Press an Arrow Key to Start Moving", True, (255, 0, 0))
+        text_background = start_text.get_rect()
+        text_background.move_ip(location)
+        
+        pygame.draw.rect(self.screen, (0, 0, 0), text_background)
+
+        self.screen.blit(start_text, location)
+        
+        pygame.display.update()
 
         
         

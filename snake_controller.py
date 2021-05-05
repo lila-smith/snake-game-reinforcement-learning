@@ -59,8 +59,8 @@ class SnakePlayer:
         if pygame.event.peek(pygame.QUIT):
             sys.exit()
             
-    def check_input_list(self):
+    def check_input_list(self, event_type=None):
         """
         
         """
-        return pygame.event.peek()
+        return pygame.event.peek(event_type)
