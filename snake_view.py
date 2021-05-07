@@ -94,7 +94,7 @@ class PygameView(SnakeView):
         snake_length = self.board.snake_length
         buffer = 20 #Higher buffer means lighter snake in general
         for index, square in enumerate(self.board.snake):
-            item = self.board.get_square(square[0], square[1])
+            item = self.board.get_square(square)
             color_factor = (index + buffer / 2) / (snake_length + buffer)
             color = [item.color[0], item.color[1], item.color[2]]
             color = [color_factor * value for value in color]
