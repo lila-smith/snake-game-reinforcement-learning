@@ -197,14 +197,17 @@ class Object(ABC):
     """
     Object instances fill the squares of 2D-list _board_array in GameBoard.
 
-
+    Attributes:
+        _color: Tuple with three integers between 0 and 255. Format: (R, G, B)
     """
     def __init__(self):
-        pass
+        self._color = (0,0,0)
 
     @abstractmethod
     def interaction(self, board_instance):
-        pass
+        """
+        Calls snake's next move on the GameBoard instance.
+        """
 
     @property
     @abstractmethod
@@ -215,45 +218,80 @@ class Object(ABC):
 
 
 class Apple(Object):
+    """
+    Apple is an Object in 2D-list _board_array in GameBoard.
+
+    There is one apple per GameBoard instance at a time. When the apple is
+    consumed, a new one will be spawned. Interacting with the apple increases
+    the snake's length by one.
+
+    Attributes:
+        _color: Tuple with three integers between 0 and 255. Format: (R, G, B)
+    """
 
     def __init__(self):
-        """
 
         """
+        Create a new instance of Apple.
+        """
+        super().__init__()
         self._color = (255, 0, 0)
 
     def interaction(self, board_instance):
+        """
+        Calls snake's next move on the GameBoard instance.
+
+        An Apple will increase the snake length.
+        """
         board_instance.increase_length()
 
     def __repr__(self):
+        """
+        Return a string with the character representing Apple.
+        """
         return "@"
 
     @property
     def color(self):
         """
-
+        Return the tuple (R, G, B) for Apple color.
         """
         return self._color
 
 
 class Blank(Object):
+    """
+    Blank is an Object in squares of 2D-list _board_array in GameBoard.
+
+    Attributes:
+        _color: Tuple with three integers between 0 and 255. Format: (R, G, B)
+    """
 
     def __init__(self):
         """
-
+        Create a new instance of Blank.
         """
+        super().__init__()
         self._color = (255, 255, 255)
 
     def interaction(self, board_instance):
+        """
+        Calls snake's next move on the GameBoard instance.
+
+        A Blank will maintain snake's trajectory.
+        """
         board_instance.maintain_velocity()
 
     def __repr__(self):
+        """
+        Return a string with the character representing Blank.
+        """
         return " "
 
     @property
     def color(self):
         """
-
+        Return the tuple (R, G, B) for Blank color.
         """
         return self._color
 
@@ -262,20 +300,29 @@ class Border(Object):
 
     def __init__(self):
         """
-
+        Create a new instance of Border.
         """
+        super().__init__()
         self._color = (0, 0, 0)
 
     def interaction(self, board_instance):
+        """
+        Calls snake's next move on the GameBoard instance.
+
+        A Border will end the game.
+        """
         board_instance.game_over()
 
     def __repr__(self):
+        """
+        Return a string of the character representing Border.
+        """
         return "#"
 
     @property
     def color(self):
         """
-
+        Return the tuple (R, G, B) for Border color.
         """
         return self._color
 
@@ -286,13 +333,19 @@ class SnakeHead(Object):
         """
 
         """
+        super().__init__()
         self._color = (0, 255, 0)
-
-    def interaction(self, board_instance):
-        board_instance.increase_length()
 
     def __repr__(self):
         return "o"
+
+    def interaction(self, board_instance):
+        """
+        Calls snake's next move on the GameBoard instance.
+        
+        The snake will never interact with the SnakeHead.
+        """
+        pass
 
     @property
     def color(self):
@@ -308,9 +361,15 @@ class SnakeTail(Object):
         """
 
         """
+        super().__init__()
         self._color = (0, 255, 0)
 
     def interaction(self, board_instance):
+        """
+        Calls snake's next move on the GameBoard instance.
+        
+        A SnakeTail will end the game.
+        """
         board_instance.game_over()
 
     def __repr__(self):
