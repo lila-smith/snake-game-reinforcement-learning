@@ -63,26 +63,44 @@ class GameBoard:
 
     @property
     def board_array(self):
+        """
+        Return 2D-list _board_array.
+        """
         return self._board_array
 
     @property
     def size(self):
+        """
+        Return integer _size of board side length.
+        """
         return self._size
 
     @property
     def direction(self):
+        """
+        Return list of current snake direction.
+        """
         return self._direction
 
     @property
     def end_condition(self):
+        """
+        Return boolean for if game has been ended.
+        """
         return self._end_condition
 
     @property
     def snake_length(self):
+        """
+        Return integer length of snake.
+        """
         return len(self._snake)
 
     @property
     def snake(self):
+        """
+        Return list of two-element lists for snake locations.
+        """
         return self._snake
 
     def change_direction(self, direction):
@@ -111,13 +129,13 @@ class GameBoard:
         """
         Moves snake one block forward.
 
-        Removes last Snake entry and adds new Snake instance to front. 
+        Removes last Snake entry and adds new Snake instance to front.
         Interaction is called when next square is Blank instance.
         """
         # Set up rows and cols to access
         next_square = [(self.snake[0][0] + self.direction[0]),
                        (self.snake[0][1] + self.direction[1])]
-        last_square = self._snake.pop()        
+        last_square = self._snake.pop()
         # Mark appropriate squares
         self.mark_square(last_square, Blank())
         self.mark_square(next_square, Snake())
@@ -203,7 +221,7 @@ class Object(ABC):
     @abstractmethod
     def color(self):
         """
-
+        Return the tuple (R, G, B) for Object color.
         """
 
 
@@ -331,7 +349,7 @@ class Snake(Object):
     Snake is an Object in 2D-list _board_array in GameBoard.
 
     The first Snake instance is spawned at the center of the board. From there,
-    it will move and create more Snake instances when interacting with Apple. 
+    it will move and create more Snake instances when interacting with Apple.
     Interacting with a Snake ends the game.
 
     Attributes:
@@ -347,7 +365,6 @@ class Snake(Object):
     def interaction(self, board_instance):
         """
         Calls snake's next move on the GameBoard instance.
-        
         A Snake will end the game.
         """
         board_instance.game_over()
