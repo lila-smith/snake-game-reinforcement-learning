@@ -165,21 +165,19 @@ class GameBoard:
 
     def get_square(self, location):
         """
-        Returns the Object instance in specified row and column.
+        Returns the Object instance in specified location.
 
         Args:
-            row: Integer less than _size for first index of _board_array.
-            col: Integer less than _size for second index of _board_array.
+            location: Two-element integer list in (row, col) format.
         """
         return self.board_array[location[0]][location[1]]
 
     def mark_square(self, location, object_type):
         """
-        Changes the Object in specified row and column.
+        Changes the Object in specified location.
 
         Args:
-            row: Integer less than _size for first index of _board_array.
-            col: Integer less than _size for second index of _board_array.
+            location: Two-element integer list in (row, col) format.
             object_type: An instance of inheritor of Object.
         """
         self._board_array[location[0]][location[1]] = object_type
