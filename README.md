@@ -7,3 +7,7 @@ Using the arrow keys to control direction, navigate around the board to collect 
 To play the snake game, you must have the `pygame` library. If you don't have it, it can be installed using `pip install pygame`.
 
 To run the game, navigate to the folder `snake-game` in terminal and run `python snake_game.py`. You can also run `snake_game.py` in any other ways you would run a python file.
+
+#### Website
+
+For more detail, check out our [website](https://bookish-system-f98d73b6.pages.github.io/).
