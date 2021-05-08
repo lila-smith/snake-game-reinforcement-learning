@@ -2,7 +2,7 @@
 
 Using the arrow keys to control direction, navigate around the board to collect apples and avoid hitting the borders or your own tail. Eating an apple increases your length by one while hitting the borders or tail will cause the game to end. The goal is to get the longest length snake. The snake game is created using Python and the pygame library.
 
-PUT GIF HERE
+![](https://im7.ezgif.com/tmp/ezgif-7-39bf1583f866.gif)
 
 ### How to run
 
