@@ -1,24 +1,9 @@
-# tiny-block-big-world
+# Snake Game
 
-### Model
-* 2D list to represent movement grid
-* 
+### Gameplay
+Using the arrow keys to control direction, navigate around the board to collect apples and avoid hitting the borders or your own tail. Eating an apple increases your length by one while hitting the borders or tail will cause the game to end. The goal is to get the longest length snake. The snake game is created using Python and the pygame library.
 
-### View
-* Text-view to start
-* pygame view after
+### How to Run
+To play the snake game, you must have the `pygame` library. If you don't have it, it can be installed using `pip install pygame`.
 
-### Control
-* Arrow key input
-
-
-Snake?
-Conway's Game of Life?
-Lavaboy and watergirl?
-
-A player can move around on a screen
-
-Actionable items:
-* Finding out how to get arrow input for text-based game
-* A way to refresh the screen/terminal instead of just printing again
-* Have a thing that can move around text-based grid with user input
+To run the game, navigate to the folder `snake-game` in terminal and run `python snake_game.py`. You can also run `snake_game.py` in any other ways you would run a python file.
