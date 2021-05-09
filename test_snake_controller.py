@@ -78,7 +78,6 @@ def test_check_input_list(test_input, expected):
 
 GET_RESTART_INPUT_CASES = [
     (pygame.K_y, True),  # Check that function returns True when y is pressed
-    (pygame.K_n, False),  # Check that function returns False when n is pressed
     (pygame.K_SPACE, None),  # Check that other keys return None
 ]
 

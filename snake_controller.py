@@ -119,6 +119,5 @@ def get_restart_input():
             return True
 
         if event.key == pygame.K_n:
-            return False
             sys.exit()
     return None
