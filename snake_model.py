@@ -7,6 +7,7 @@ inheritors are placed in the GameBoard to represent types of squares.
 from abc import ABC, abstractmethod
 import math
 import random
+import numpy
 
 
 class GameBoard:
@@ -19,6 +20,7 @@ class GameBoard:
                   or Snake) for each square of the board
     _size: An integer for side length of the board in squares.
     _snake: List of ordered Snake positions (from head to end of tail).
+    _apple: List for Apple position.
     _direction: A list for current direction of motion referring to
                 _board_array indices.
     """
@@ -46,7 +48,12 @@ class GameBoard:
         self._snake = [snake_location]
         self.mark_square(snake_location, Snake())
 
-        self.spawn_apple()
+        apple_location = self.choose_apple_square()
+        self._apple = apple_location
+        self.mark_square(apple_location, Apple())
+
+
+
 
     def __repr__(self):
         """
@@ -102,6 +109,29 @@ class GameBoard:
         Return list of two-element lists for snake locations.
         """
         return self._snake
+    
+    @property
+    def apple(self):
+        """
+        Return two-element list for apple location.
+        """
+        return self._apple
+    
+    @property
+    def surrounding_squares(self):
+        """
+        """
+        positions = [[1,0], [0,1], [-1,0], [0,-1]]
+        #return [isinstance(self.get_square([position + self.snake[1]]), Blank) for position in positions]  
+
+    @property
+    def state(self):
+        """
+        Return state for Markov Decision Process.
+
+        The format is as follows: 
+        """
+        return (self.apple, self.direction, self.surrounding_squares)
 
     def change_direction(self, direction):
         """
@@ -159,9 +189,10 @@ class GameBoard:
         # Make new apple
         self.spawn_apple()
 
-    def spawn_apple(self):
+    def choose_apple_square(self):
         """
-        Randomly chooses a Blank instance to turn into an Apple instance.
+        Returns index of Blank instance to turn into an Apple instance.
+
         """
         blank_indexes = []
 
@@ -169,8 +200,17 @@ class GameBoard:
             if isinstance(self.get_square([row,col]), Blank):
                 blank_indexes.append([row, col])
 
-        chosen_square = random.choice(blank_indexes)
-        self.mark_square(chosen_square, Apple())
+        return random.choice(blank_indexes)
+    
+    def spawn_apple(self):
+        """
+        Returns index of Blank instance to turn into an Apple instance.
+        """
+        apple_location = self.choose_apple_square()
+        self._apple = apple_location
+        self.mark_square(apple_location, Apple())
+        
+        
 
     def game_over(self):
         """
