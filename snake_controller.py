@@ -6,6 +6,8 @@ the gameboard accordingly.
 
 import sys
 import pygame
+import random
+import numpy as np
 
 
 class SnakePlayer:
@@ -72,6 +74,101 @@ class SnakePlayer:
             if self.board.snake_length == 1 or \
                     not self.board.direction == self.opposite[event.key]:
                 self.board.change_direction(self.key_value[event.key])
+
+
+def check_to_exit():
+    """
+    Close the game if the player has x-ed out of the pygame screen
+
+    Args:
+        None
+    Returns:
+        No return value
+    """
+    if pygame.event.peek(pygame.QUIT):
+        sys.exit()
+
+
+def check_input_list(event_type=None):
+    """
+    Check if there are any events in the queue
+
+    Args:
+        event_type: a pygame event type, which is None by default
+    Returns:
+        True, if there are any of the given event in the queue
+        False, if otherwise
+    """
+    return pygame.event.peek(event_type)
+
+class MarkovPlayer:
+    """
+    Snake game controller that is used to update the gameboard using keyboard
+    input.
+
+    Attributes:
+        _board: an instance of the GameBoard class
+    """
+    key_value = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+    rewards = {
+        "apple": 50,
+        "to_apple": 1,
+        "away_apple": -1,
+        "obstacle": -100
+    }
+
+    def __init__(self, board_instance):
+        """
+        Initialize the controller with a gameboard, so that the controller
+        can update the model
+
+        Args:
+            board_instance: a gameboard, which is an instance of class
+            GameBoard
+        Returns:
+            No return value
+        """
+        self._board = board_instance
+
+    @property
+    def board(self):
+        """
+        Return the gameboard, which is a private attribute
+
+        Args:
+            None
+        Returns:
+            self._board: the gameboard
+        """
+        return self._board
+    
+    def calculate_outcomes(self):
+        empty, to_apples, apples = self.board.state
+        outcomes = ~np.array(empty)*self.rewards["obstacle"] + \
+                   np.array(to_apples)*self.rewards["to_apple"] + \
+                   ~np.array(to_apples)*self.rewards["away_apple"] + \
+                   np.array(apples)*self.rewards["apple"]
+        return outcomes
+
+        
+    def get_input(self):
+        """
+        Update the gameboard according to the Markov Decision Process
+
+        Args:
+            None
+        Returns:
+            No return value
+        """
+        event = pygame.event.poll()
+        if event.type == pygame.QUIT:
+            sys.exit()
+        
+        outcomes = self.calculate_outcomes()
+        print(outcomes)
+        max_item = max(outcomes)
+        index_list = [index for index in range(len(outcomes)) if outcomes[index] == max_item]
+        self.board.change_direction(self.key_value[random.choice(index_list)])
 
 
 def check_to_exit():

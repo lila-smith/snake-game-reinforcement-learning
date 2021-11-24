@@ -7,7 +7,7 @@ inheritors are placed in the GameBoard to represent types of squares.
 from abc import ABC, abstractmethod
 import math
 import random
-import numpy
+import numpy as np
 
 
 class GameBoard:
@@ -120,9 +120,27 @@ class GameBoard:
     @property
     def surrounding_squares(self):
         """
+        Convoluted way to get all of the directions, but oh well, it's a MATLAB moment.
         """
-        positions = [[1,0], [0,1], [-1,0], [0,-1]]
-        #return [isinstance(self.get_square([position + self.snake[1]]), Blank) for position in positions]  
+        angles = [math.pi / 2 * i for i in range(4)]
+        positions = [[int(self.snake[0][0] + math.cos(angle)),
+                      int(self.snake[0][1] + math.sin(angle))] for angle in angles]
+        return positions  
+        
+    @property
+    def surrounding_empty(self):
+        positions = self.surrounding_squares
+        return [(isinstance(self.get_square(position), Blank) or isinstance(self.get_square(position), Apple)) for position in positions]
+
+    @property
+    def surrounding_to_apple(self):
+        positions = self.surrounding_squares
+        return [self.toward_apple(position) for position in positions]
+    
+    @property
+    def surrounding_apple(self):
+        positions = self.surrounding_squares
+        return [isinstance(self.get_square(position), Apple) for position in positions]
 
     @property
     def state(self):
@@ -131,7 +149,7 @@ class GameBoard:
 
         The format is as follows: 
         """
-        return (self.apple, self.direction, self.surrounding_squares)
+        return (self.surrounding_empty, self.surrounding_to_apple, self.surrounding_apple)
 
     def change_direction(self, direction):
         """
@@ -210,7 +228,12 @@ class GameBoard:
         self._apple = apple_location
         self.mark_square(apple_location, Apple())
         
-        
+    def toward_apple(self, next):
+        snake = np.array(self.snake[0])
+        apple = np.array(self.apple)
+        next = np.array(next)
+        return np.linalg.norm(snake - apple) > np.linalg.norm(next - apple)
+   
 
     def game_over(self):
         """

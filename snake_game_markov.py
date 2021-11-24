@@ -6,7 +6,7 @@ import time
 import pygame
 from snake_model import GameBoard
 from snake_view import PygameView
-from snake_controller import SnakePlayer, check_to_exit, check_input_list, get_restart_input
+from snake_controller import SnakePlayer, MarkovPlayer, check_to_exit, check_input_list, get_restart_input
 
 
 def main():
@@ -26,7 +26,7 @@ def main():
     gameboard = GameBoard(20)
     graphic_view = PygameView(gameboard)
     controls = SnakePlayer(gameboard)
-    
+    fake_controls = MarkovPlayer(gameboard)
 
     graphic_view.draw()
 
@@ -36,12 +36,12 @@ def main():
         check_to_exit()
 
     while not gameboard.end_condition:
-        controls.get_input()
+        fake_controls.get_input()
         gameboard.check_next_square()
         graphic_view.draw()
         check_to_exit()
         time.sleep(.2)
-        print(gameboard.surrounding_squares)
+        #print(fake_controls.calculate_outcomes())
 
     while gameboard.end_condition:
         graphic_view.draw_gameover()
