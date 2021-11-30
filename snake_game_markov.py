@@ -40,7 +40,7 @@ def main():
         gameboard.check_next_square()
         graphic_view.draw()
         check_to_exit()
-        time.sleep(.2)
+        time.sleep(.1)
         #print(fake_controls.calculate_outcomes())
 
     while gameboard.end_condition:

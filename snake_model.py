@@ -229,6 +229,12 @@ class GameBoard:
         self.mark_square(apple_location, Apple())
         
     def toward_apple(self, next):
+        """
+        Returns true if "next" is closer to apple than current snake head.
+
+        Args:
+            next: A two-item tuple for a location on the board.
+        """
         snake = np.array(self.snake[0])
         apple = np.array(self.apple)
         next = np.array(next)
