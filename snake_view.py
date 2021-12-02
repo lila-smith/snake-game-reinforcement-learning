@@ -120,7 +120,7 @@ class PygameView(SnakeView):
         """
         super().__init__(board_instance)
 
-        self._scale_factor = 30
+        self._scale_factor = 45
         self._screen_size = self.board.size * \
             self._scale_factor, self.board.size * self._scale_factor
         self._screen = pygame.display.set_mode(self._screen_size)
