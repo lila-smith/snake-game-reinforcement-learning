@@ -117,6 +117,7 @@ class GameBoard:
         """
         return self._apple
     
+    
     @property
     def surrounding_squares(self):
         """
@@ -143,13 +144,57 @@ class GameBoard:
         return [isinstance(self.get_square(position), Apple) for position in positions]
 
     @property
-    def state(self):
+    def markov_state(self):
         """
         Return state for Markov Decision Process.
 
         The format is as follows: 
         """
         return (self.surrounding_empty, self.surrounding_to_apple, self.surrounding_apple)
+
+    # Reinforcement learning
+    @property
+    def rl_state(self):
+        return self.surrounding_walls, self.relative_apple, self.relative_tail
+
+    def direction_from_angle(self, angle):
+        c, s = np.cos(angle), np.sin(angle)
+        direction = np.array(self.direction)
+        R = np.array([[c, -s], [s, c]])
+        return R @ direction
+
+    def vec2snakeframe(self, vec):
+        pass
+
+    @property
+    def surrounding_walls(self):
+        """
+        Returns if wall to left, straight, and right in logic array.
+        """
+        snake_head = np.array(self.snake[0])
+        angles = np.array([math.pi / 2, 0, -math.pi / 2])
+        squares = np.array([snake_head + self.direction_from_angle(angle)\
+                            for angle in angles]).astype(int)
+        return [isinstance((self.get_square(square)), Border) \
+                            for square in squares]
+    
+    @property
+    def relative_apple(self):
+        """
+        """
+        snake_head = np.array(self.snake[0])
+        apple = np.array(self.apple)
+        return np.ndarray.tolist(apple - snake_head)
+
+    @property
+    def relative_tail(self):
+        """
+        """
+        snake_head = np.array(self.snake[0])
+        snake_tail = np.array(self.snake[-1])
+        return np.ndarray.tolist(snake_tail - snake_head)
+
+
 
     def change_direction(self, direction):
         """

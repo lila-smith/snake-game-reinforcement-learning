@@ -41,7 +41,7 @@ def main():
         graphic_view.draw()
         check_to_exit()
         time.sleep(.2)
-        print(gameboard.surrounding_squares)
+        print(gameboard.rl_state)
 
     while gameboard.end_condition:
         graphic_view.draw_gameover()

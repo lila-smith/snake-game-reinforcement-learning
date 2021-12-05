@@ -143,7 +143,7 @@ class MarkovPlayer:
         return self._board
     
     def calculate_outcomes(self):
-        empty, to_apples, apples = self.board.state
+        empty, to_apples, apples = self.board.markov_state
         outcomes = ~np.array(empty)*self.rewards["obstacle"] + \
                    np.array(to_apples)*self.rewards["to_apple"] + \
                    ~np.array(to_apples)*self.rewards["away_apple"] + \
@@ -165,7 +165,6 @@ class MarkovPlayer:
             sys.exit()
         
         outcomes = self.calculate_outcomes()
-        print(outcomes)
         max_item = max(outcomes)
         index_list = [index for index in range(len(outcomes)) if outcomes[index] == max_item]
         self.board.change_direction(self.key_value[random.choice(index_list)])
