@@ -24,6 +24,12 @@ class GameBoard:
     _direction: A list for current direction of motion referring to
                 _board_array indices.
     """
+    direction2angle = {
+        (1,0): 0,
+        (0,1): np.pi / 2,
+        (-1,0): np.pi,
+        (0,-1): 3 * np.pi / 2,
+    }
 
     def __init__(self, side):
         """
@@ -88,6 +94,13 @@ class GameBoard:
         Return list of current snake direction.
         """
         return self._direction
+
+    @property
+    def angular_direction(self):
+        """
+        Get currently angular direction
+        """
+        return self.direction2angle[tuple(self.direction)] 
 
     @property
     def end_condition(self):
@@ -157,11 +170,9 @@ class GameBoard:
     def rl_state(self):
         return self.surrounding_walls, self.relative_apple, self.relative_tail
 
-    def direction_from_angle(self, angle):
+    def R_angle(self, angle):
         c, s = np.cos(angle), np.sin(angle)
-        direction = np.array(self.direction)
-        R = np.array([[c, -s], [s, c]])
-        return R @ direction
+        return np.array([[c, -s], [s, c]])
 
     def vec2snakeframe(self, vec):
         pass
@@ -171,9 +182,10 @@ class GameBoard:
         """
         Returns if wall to left, straight, and right in logic array.
         """
+        direction = np.array(self.direction)
         snake_head = np.array(self.snake[0])
         angles = np.array([math.pi / 2, 0, -math.pi / 2])
-        squares = np.array([snake_head + self.direction_from_angle(angle)\
+        squares = np.array([snake_head + self.R_angle(angle) @ direction\
                             for angle in angles]).astype(int)
         return [isinstance((self.get_square(square)), Border) \
                             for square in squares]
@@ -184,7 +196,10 @@ class GameBoard:
         """
         snake_head = np.array(self.snake[0])
         apple = np.array(self.apple)
-        return np.ndarray.tolist(apple - snake_head)
+        location = self.R_angle(self.angular_direction) @ np.ndarray.tolist(apple - snake_head)
+        direction = [coord / abs(coord) if coord != 0 else 0 for coord in location]
+        return direction
+
 
     @property
     def relative_tail(self):
@@ -192,9 +207,9 @@ class GameBoard:
         """
         snake_head = np.array(self.snake[0])
         snake_tail = np.array(self.snake[-1])
-        return np.ndarray.tolist(snake_tail - snake_head)
-
-
+        location = self.R_angle(self.angular_direction) @ np.ndarray.tolist(snake_tail - snake_head)
+        direction = [coord / abs(coord) if coord != 0 else 0 for coord in location]
+        return direction
 
     def change_direction(self, direction):
         """
