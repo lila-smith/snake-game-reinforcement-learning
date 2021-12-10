@@ -227,7 +227,7 @@ class RLPlayer:
     Attributes:
         _board: an instance of the GameBoard class
     """
-    key_value = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+    key_value = [-np.pi/2, 0, np.pi/2]
     rewards = {
         "apple": 50,
         "to_apple": 1,
@@ -235,19 +235,20 @@ class RLPlayer:
         "obstacle": -100
     }
 
-    column_names = ["w_l","w_s","w_r","apple","tail","Q_k_l","k_l","Q_k_s","k_s","Q_k_r","k_r"]
+    column_names = ["w_l","w_s","w_r","apple_x", "apple_y","tail_x", "tail_y","Q_k_l","k_l","Q_k_s","k_s","Q_k_r","k_r"]
 
-    directions = [[-1,-1],[-1,0],[-1,1], \
-                  [0,-1],[0,0],[0,1], \
-                  [0,-1],[0,0],[0,1]]
+    directions = [-1,0,1]
 
     initial_reward = 5
 
-    num_states = len(directions)**2 * 2**3
+    num_states = len(directions)**4 * 2**3
 
     walls = [True, False]
 
-    def __init__(self, board_instance, path_to_agent):
+    Q_columns = ["Q_k_l","Q_k_s","Q_k_r"]
+    k_columns = ["k_l","k_s","k_r"]
+
+    def __init__(self, board_instance, path_to_agent, new_agent=True, e=0):
         """
         Initialize the controller with a gameboard, so that the controller
         can update the model
@@ -255,28 +256,33 @@ class RLPlayer:
         Args:
             board_instance: a gameboard, which is an instance of class
             GameBoard
+            path_to_agent:
+            new_agent:
+            e: 
         Returns:
             No return value
         """
         self._board = board_instance
         self._csv = path_to_agent
-        temp_numpy = np.zeros([self.num_states, len(self.column_names)])
-        print(np.shape(temp_numpy))
-        i = 0
-        for direction_tail in self.directions:
-            for direction_apple in self.directions:
-                for wall_l in self.walls:
-                    for wall_s in self.walls:
-                        for wall_r in self.walls:
-                            temp_numpy[i,:] = np.array([wall_l, wall_s, wall_r, np.array(direction_apple), np.array(direction_tail), self.initial_reward, 1, self.initial_reward, 1, self.initial_reward, 1])
-                            i += 1
+        self._e = 0
 
-        self._df = pd.DataFrame(temp_numpy, columns=self.column_names)
-                            
-
-
-
-        
+        if new_agent: 
+            temp_numpy = np.zeros([self.num_states, len(self.column_names)])
+            i = 0
+            # This should be rewritten to not have this monster for loop nest
+            for direction_tail_x in self.directions:
+                for direction_tail_y in self.directions:
+                    for direction_apple_x in self.directions:
+                        for direction_apple_y in self.directions:
+                            for wall_l in self.walls:
+                                for wall_s in self.walls:
+                                    for wall_r in self.walls:
+                                        temp_numpy[i,:] = np.array([wall_l, wall_s, wall_r, direction_apple_x, direction_apple_y, direction_tail_x, direction_tail_y, self.initial_reward, 1, self.initial_reward, 1, self.initial_reward, 1])
+                                        i += 1
+            self._df = pd.DataFrame(temp_numpy, columns=self.column_names)
+        else:
+            self._df = pd.read_csv(self.csv)
+                                    
 
     @property
     def board(self):
@@ -301,13 +307,21 @@ class RLPlayer:
         """
         """
         return self._csv
+
+    @property
+    def e(self):
+        """
+        """
+        return self._e
     
-    def calculate_outcomes(self):
-        empty, to_apples, apples = self.board.markov_state
-        outcomes = ~np.array(empty)*self.rewards["obstacle"] + \
-                   np.array(to_apples)*self.rewards["to_apple"] + \
-                   ~np.array(to_apples)*self.rewards["away_apple"] + \
-                   np.array(apples)*self.rewards["apple"]
+    def choose_outcome(self, df, idx):
+
+        if np.random.rand(1) < self.e:
+            return np.random.rand(3)
+        else:
+            outcomes = [df.at[idx,"Q_k_l"]/df.at[idx,"k_l"], 
+                        df.at[idx,"Q_k_s"]/df.at[idx,"k_s"],
+                        df.at[idx,"Q_k_r"]/df.at[idx,"k_r"]]
         return outcomes
 
 
@@ -325,15 +339,27 @@ class RLPlayer:
         if event.type == pygame.QUIT:
             sys.exit()
         
-        outcomes = self.calculate_outcomes()
+        df = self.df
+        walls, apple, tail = self.board.rl_state
+        row = df.loc[(df["w_l"] == walls[0]) & (df["w_s"] == walls[1]) & (df["w_r"] == walls[2]) \
+                   & (df["apple_x"] == apple[0]) & (df["apple_y"] == apple[1]) \
+                   & (df["tail_x"] == tail[0]) & (df["tail_y"] == tail[1])]
+        idx = row.index[0]
+        outcomes = self.choose_outcome(self.df, idx)
+        print(outcomes)
         max_item = max(outcomes)
         index_list = [index for index in range(len(outcomes)) if outcomes[index] == max_item]
-        self.board.change_direction(self.key_value[random.choice(index_list)])
+        chosen_index = random.choice(index_list)
+        rotation = self.board.R_angle(self.key_value[chosen_index])
+        self.board.change_direction((rotation @ np.array(self.board.direction)).astype(int).tolist())
+        
+    def add_entry(self, index, value):
+        pass
 
     def export_at_endgame(self):
         """
         """
-        self.df.to_csv(self.csv)
+        self.df.to_csv(self.csv, index=False)
 
 
 

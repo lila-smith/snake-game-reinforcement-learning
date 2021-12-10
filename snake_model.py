@@ -41,7 +41,7 @@ class GameBoard:
         """
         self._end_condition = False
         self._size = side
-        self._direction = [0, 0]  # Delta row, delta column
+        self._direction = [1, 0]  # Delta row, delta column
         self._board_array = [[Blank() for _ in range(self._size)]
                              for _ in range(self._size)]
 
@@ -194,6 +194,8 @@ class GameBoard:
     def relative_apple(self):
         """
         """
+        if self.direction == [0,0]:
+            return [0,0]
         snake_head = np.array(self.snake[0])
         apple = np.array(self.apple)
         location = self.R_angle(self.angular_direction) @ np.ndarray.tolist(apple - snake_head)
@@ -205,6 +207,8 @@ class GameBoard:
     def relative_tail(self):
         """
         """
+        if self.direction == [0,0]:
+            return [0,0]
         snake_head = np.array(self.snake[0])
         snake_tail = np.array(self.snake[-1])
         location = self.R_angle(self.angular_direction) @ np.ndarray.tolist(snake_tail - snake_head)
@@ -229,9 +233,8 @@ class GameBoard:
         or game over.
         """
         snake_head = self.snake[0]
-        if self.direction != [0, 0]:
-            self.board_array[(snake_head[0] + self.direction[0])] \
-            [(snake_head[1] + self.direction[1])].interaction(self)
+        self.board_array[(snake_head[0] + self.direction[0])] \
+                        [(snake_head[1] + self.direction[1])].interaction(self)
 
     def maintain_velocity(self):
         """

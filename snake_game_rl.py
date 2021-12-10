@@ -30,7 +30,7 @@ def main():
         gameboard = GameBoard(20)
         graphic_view = PygameViewRL(gameboard)
         controls = SnakePlayer(gameboard)
-        fake_controls = RLPlayer(gameboard,"snake1.csv")
+        fake_controls = RLPlayer(gameboard,"snake1.csv",new_agent=False)
 
         graphic_view.draw()
 
@@ -42,7 +42,6 @@ def main():
             graphic_view.draw()
             check_to_exit()
             time.sleep(.1)
-            print(gameboard.relative_tail)
 
         fake_controls.export_at_endgame()
 
