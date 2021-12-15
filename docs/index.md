@@ -21,8 +21,10 @@ In the snake game for an 18 by 18 board and a length one snake, there are 324 ch
 
 Instead, let's look at scenario:
 
-![up_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/up_snake.png)
-![down_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/down_snake.png)
+<p align="center">
+ <img width="300" height="300" src="https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/up_snake.png">
+  <img width="300" height="300" src="https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/down_snake.png">
+</p>
 
 These two environments share a lot in common. While one has a snake facing up and the other down, they both have no walls surrounding them, and there is an apple two squares to *the snake's* right. 
 
@@ -47,6 +49,8 @@ There are now **648 possible states**, a much more manageable number for storing
 ---
 
 ### Rewards
+![up_snake]()
+![down_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/down_snake.png)
 
 In the intro, I stated that you choose what sort of positive or negative reward should be given when something happens in the environment. What sorts of things should we be considering in the snake game?
 
@@ -60,10 +64,11 @@ You may at first think that it is unnecessary to reward the snake for moving tow
 
 So how does the snake store its history of rewards to learn from them?
 
-Let's review: the snake chooses to take action *a* while in state *s*. After the action is taken, the snake is given reward *R*. We will use a CSV to store data about rewards: each state will be given a row and within it, the total number of rewards we have gotten will
+Let's review: the snake chooses to take action *a* while in state *s*. After the action is taken, the snake is given reward *R*. We will use a CSV to store data about rewards: each state will be given a row and within it, there will be a two columns for each action (2 columns for each action left, straight, and right). One of these columns will store the number of times the action *a* has been tried in this state; we will call this number *k(a)*. There will also be the total number of rewards ever given for this action *a* up to the *k*th time; we will call this *Q_k(a)*.
 
+When the snake is evaluating the optimal action, it will look to its current state's row. Then, it will see which of the three actions has resulted in the highest average reward (*Q_k(a) / k(a)*) and select this action.
 
-
+After the snake has chosen an action *a*, the reward will be added to *Q_a(a)*, and *k(a)* will increase by one. Over time, this will result in the snake choosing the best action for the state *s*.
 
 ---
 ### Exploration and Exploitation
