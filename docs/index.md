@@ -21,8 +21,8 @@ In the snake game for an 18 by 18 board and a length one snake, there are 324 ch
 
 Instead, let's look at scenario:
 
-![up_snake](up_snake.png)
-![down_snake](down_snake.png)
+![up_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/up_snake.png)
+![down_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/down_snake.png)
 
 These two environments share a lot in common. While one has a snake facing up and the other down, they both have no walls surrounding them, and there is an apple two squares to *the snake's* right. 
 
@@ -60,7 +60,7 @@ You may at first think that it is unnecessary to reward the snake for moving tow
 
 So how does the snake store its history of rewards to learn from them?
 
-Let's review: the snake chooses to take action *a* while in state *s*. After the action is taken, the snake is given 
+Let's review: the snake chooses to take action *a* while in state *s*. After the action is taken, the snake is given reward *R*. We will use a CSV to store data about rewards: each state will be given a row and within it, the total number of rewards we have gotten will
 
 
 
@@ -76,23 +76,21 @@ There is a tension between learning, which often involves failing, and a greedy 
 
 For my agent, I implemented both of these techniques separately. Unfortunately, I did not have time to actually tune ε, so there was a clear better performance with ε = 0.
 
-
-
 --- 
 
 ### Learning
 
 Here's our snake during its first few games. It has yet to learn that walls are bad or to seek the most direct path to an apple. The movement is uncoordinated and without direction.
 
-![early_snake](early_snake.gif) 
+![early_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/early_snake.gif) 
 
 Now, it has about 100 games under its belt. It is much better about hitting walls but has gotten to the stage where it will hit its own tail completely out of the blue. The movement is more directed but often uses diagonal paths.
 
-![mid_snake](mid_snake.gif)
+![mid_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/mid_snake.gif)
 
 And, wow, look at 1,000 games! Its movements are much more similar to a human player, using switchbacks to its advantage as length increases. While it is ultimately defeated by its own tail, it takes a quite while for it to get trapped.
 
-![late_snake](late_snake.gif)
+![late_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/late_snake.gif)
 
 ---
 <a id="citations"></a>
