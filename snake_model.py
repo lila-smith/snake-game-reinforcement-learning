@@ -188,6 +188,7 @@ class GameBoard:
         squares = np.array([snake_head + self.R_angle(angle) @ direction\
                             for angle in angles]).astype(int)
         return [isinstance((self.get_square(square)), Border) \
+            or isinstance((self.get_square(square)), Snake)
                             for square in squares]
     
     @property
@@ -291,7 +292,7 @@ class GameBoard:
         self._apple = apple_location
         self.mark_square(apple_location, Apple())
         
-    def toward_apple(self, next):
+    def toward_apple(self, next_square):
         """
         Returns true if "next" is closer to apple than current snake head.
 
@@ -300,8 +301,8 @@ class GameBoard:
         """
         snake = np.array(self.snake[0])
         apple = np.array(self.apple)
-        next = np.array(next)
-        return np.linalg.norm(snake - apple) > np.linalg.norm(next - apple)
+        next_square = np.array(next_square)
+        return np.linalg.norm(snake - apple) > np.linalg.norm(next_square - apple)
    
 
     def game_over(self):
@@ -355,6 +356,13 @@ class Object(ABC):
         """
         Return the tuple (R, G, B) for Object color.
         """
+    
+    @property
+    @abstractmethod
+    def reward(self):
+        """
+        Return value of Object for learning.
+        """
 
 
 class Apple(Object):
@@ -376,6 +384,7 @@ class Apple(Object):
         """
         super().__init__()
         self._color = (255, 0, 0)
+        self._reward = 1
 
     def interaction(self, board_instance):
         """
@@ -397,6 +406,12 @@ class Apple(Object):
         Return the tuple (R, G, B) for Apple color.
         """
         return self._color
+    
+    @property
+    def reward(self):
+        """
+        """
+        return self._reward
 
 
 class Blank(Object):
@@ -413,6 +428,7 @@ class Blank(Object):
         """
         super().__init__()
         self._color = (255, 255, 255)
+        self._reward = -0.05
 
     def interaction(self, board_instance):
         """
@@ -434,6 +450,12 @@ class Blank(Object):
         Return the tuple (R, G, B) for Blank color.
         """
         return self._color
+    
+    @property
+    def reward(self):
+        """
+        """
+        return self._reward
 
 
 class Border(Object):
@@ -453,6 +475,7 @@ class Border(Object):
         """
         super().__init__()
         self._color = (0, 0, 0)
+        self._reward = -1
 
     def interaction(self, board_instance):
         """
@@ -475,6 +498,12 @@ class Border(Object):
         """
         return self._color
 
+    @property
+    def reward(self):
+        """
+        """
+        return self._reward
+
 
 class Snake(Object):
     """
@@ -493,6 +522,8 @@ class Snake(Object):
         """
         super().__init__()
         self._color = (0, 255, 0)
+        self._reward = -1
+
 
     def interaction(self, board_instance):
         """
@@ -513,3 +544,9 @@ class Snake(Object):
         Return the tuple (R, G, B) for Snake color.
         """
         return self._color
+
+    @property
+    def reward(self):
+        """
+        """
+        return self._reward

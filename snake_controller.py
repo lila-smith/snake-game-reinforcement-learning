@@ -239,7 +239,7 @@ class RLPlayer:
 
     directions = [-1,0,1]
 
-    initial_reward = 5
+    initial_reward = 2
 
     num_states = len(directions)**4 * 2**3
 
@@ -248,7 +248,7 @@ class RLPlayer:
     Q_columns = ["Q_k_l","Q_k_s","Q_k_r"]
     k_columns = ["k_l","k_s","k_r"]
 
-    def __init__(self, board_instance, path_to_agent, new_agent=True, e=0):
+    def __init__(self, board_instance, path_to_agent, path_to_record, new_agent=True, e=0):
         """
         Initialize the controller with a gameboard, so that the controller
         can update the model
@@ -265,6 +265,7 @@ class RLPlayer:
         self._board = board_instance
         self._csv = path_to_agent
         self._e = 0
+        self._cvs_game_record = path_to_record
 
         if new_agent: 
             temp_numpy = np.zeros([self.num_states, len(self.column_names)])
@@ -280,8 +281,11 @@ class RLPlayer:
                                         temp_numpy[i,:] = np.array([wall_l, wall_s, wall_r, direction_apple_x, direction_apple_y, direction_tail_x, direction_tail_y, self.initial_reward, 1, self.initial_reward, 1, self.initial_reward, 1])
                                         i += 1
             self._df = pd.DataFrame(temp_numpy, columns=self.column_names)
+            self._df_game_record = pd.DataFrame(columns=["Game number","Length"])
         else:
             self._df = pd.read_csv(self.csv)
+            self._df_game_record = pd.read_csv(self.csv_record)
+
                                     
 
     @property
@@ -303,10 +307,22 @@ class RLPlayer:
         return self._df
 
     @property
+    def df_game_record(self):
+        """
+        """
+        return self._df_game_record
+
+    @property
     def csv(self):
         """
         """
         return self._csv
+
+    @property
+    def csv_record(self):
+        """
+        """
+        return self._cvs_game_record
 
     @property
     def e(self):
@@ -346,21 +362,50 @@ class RLPlayer:
                    & (df["tail_x"] == tail[0]) & (df["tail_y"] == tail[1])]
         idx = row.index[0]
         outcomes = self.choose_outcome(self.df, idx)
-        print(outcomes)
+
         max_item = max(outcomes)
         index_list = [index for index in range(len(outcomes)) if outcomes[index] == max_item]
         chosen_index = random.choice(index_list)
         rotation = self.board.R_angle(self.key_value[chosen_index])
         self.board.change_direction((rotation @ np.array(self.board.direction)).astype(int).tolist())
+
+        reward = self.check_next_reward()
+        self.add_entry(idx, chosen_index, reward)
+
+
         
-    def add_entry(self, index, value):
-        pass
+    def add_entry(self, index, chosen_idx, value):
+        self._df.at[index, self.Q_columns[chosen_idx]] += value
+        self._df.at[index, self.k_columns[chosen_idx]] += 1
+
+
+    def add_game_record(self, length):
+        new_record = pd.DataFrame([[1, length]],columns=["Game number","Length"])
+        self._df_game_record = self._df_game_record.append(new_record)
 
     def export_at_endgame(self):
         """
         """
         self.df.to_csv(self.csv, index=False)
+        self.add_game_record(self.board.snake_length)
+        self.df_game_record.to_csv(self.csv_record, index=False)
 
+    def check_next_reward(self):
+        """
+        Moves snake in direction and interacts with the next square. The
+        interaction will result in maintained velocity, increased length,
+        or game over.
+        """
+
+        direction = np.array(self.board.direction)
+        snake_head = np.array(self.board.snake[0])
+        apple = np.array(self.board.apple)
+        next_square = snake_head + direction
+
+        base_reward = self.board.board_array[next_square[0]][next_square[1]].reward
+        if np.linalg.norm(snake_head - apple) > np.linalg.norm(next_square - apple):
+            return base_reward + 0.05
+        return base_reward
 
 
 def check_to_exit():
@@ -373,6 +418,20 @@ def check_to_exit():
         No return value
     """
     if pygame.event.peek(pygame.QUIT):
+        sys.exit()
+
+
+def check_to_exit_rl(controller):
+    """
+    Close the game if the player has x-ed out of the pygame screen
+
+    Args:
+        None
+    Returns:
+        No return value
+    """
+    if pygame.event.peek(pygame.QUIT):
+        controller.export_at_endgame()
         sys.exit()
 
 
