@@ -21,8 +21,8 @@ In the snake game for an 18 by 18 board and a length one snake, there are 324 ch
 
 Instead, let's look at scenario:
 
-![up_snake](../up_snake.png)
-![down_snake](../down_snake.png)
+![up_snake](up_snake.png)
+![down_snake](down_snake.png)
 
 These two environments share a lot in common. While one has a snake facing up and the other down, they both have no walls surrounding them, and there is an apple two squares to *the snake's* right. 
 
@@ -58,6 +58,10 @@ In the intro, I stated that you choose what sort of positive or negative reward 
 You may at first think that it is unnecessary to reward the snake for moving toward the apple, but that is the thought of someone who has not watched their snake move about board for 10 minutes during game 100 at length one—never dying—but also never touching the apple. It will, of course, repeat this snail pace at length two and onward after it finally accidentally bumps into an apple, don't worry.
 
 
+So how does the snake store its history of rewards to learn from them?
+
+Let's review: the snake chooses to take action *a* while in state *s*. After the action is taken, the snake is given 
+
 
 
 
@@ -72,21 +76,23 @@ There is a tension between learning, which often involves failing, and a greedy 
 
 For my agent, I implemented both of these techniques separately. Unfortunately, I did not have time to actually tune ε, so there was a clear better performance with ε = 0.
 
+
+
 --- 
 
 ### Learning
 
 Here's our snake during its first few games. It has yet to learn that walls are bad or to seek the most direct path to an apple. The movement is uncoordinated and without direction.
 
-![early_snake](../early_snake.gif) 
+![early_snake](early_snake.gif) 
 
 Now, it has about 100 games under its belt. It is much better about hitting walls but has gotten to the stage where it will hit its own tail completely out of the blue. The movement is more directed but often uses diagonal paths.
 
-![mid_snake](../mid_snake.gif)
+![mid_snake](mid_snake.gif)
 
 And, wow, look at 1,000 games! Its movements are much more similar to a human player, using switchbacks to its advantage as length increases. While it is ultimately defeated by its own tail, it takes a quite while for it to get trapped.
 
-![late_snake](../late_snake.gif)
+![late_snake](late_snake.gif)
 
 ---
 <a id="citations"></a>
