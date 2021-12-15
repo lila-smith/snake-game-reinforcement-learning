@@ -22,8 +22,8 @@ In the snake game for an 18 by 18 board and a length one snake, there are 324 ch
 Instead, let's look at scenario:
 
 <p align="center">
- <img width="300" height="300" src="https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/up_snake.png">
-  <img width="300" height="300" src="https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/down_snake.png">
+ <img width="300" height="300" src="https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/down_snake.png?raw=true">
+  <img width="300" height="300" src="https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/up_snake.png?raw=true">
 </p>
 
 These two environments share a lot in common. While one has a snake facing up and the other down, they both have no walls surrounding them, and there is an apple two squares to *the snake's* right. 
@@ -49,8 +49,6 @@ There are now **648 possible states**, a much more manageable number for storing
 ---
 
 ### Rewards
-![up_snake]()
-![down_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/down_snake.png)
 
 In the intro, I stated that you choose what sort of positive or negative reward should be given when something happens in the environment. What sorts of things should we be considering in the snake game?
 
@@ -87,15 +85,15 @@ For my agent, I implemented both of these techniques separately. Unfortunately, 
 
 Here's our snake during its first few games. It has yet to learn that walls are bad or to seek the most direct path to an apple. The movement is uncoordinated and without direction.
 
-![early_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/early_snake.gif) 
+![early_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/early_snake.gif?raw=true) 
 
 Now, it has about 100 games under its belt. It is much better about hitting walls but has gotten to the stage where it will hit its own tail completely out of the blue. The movement is more directed but often uses diagonal paths.
 
-![mid_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/mid_snake.gif)
+![mid_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/mid_snake.gif?raw=true)
 
 And, wow, look at 1,000 games! Its movements are much more similar to a human player, using switchbacks to its advantage as length increases. While it is ultimately defeated by its own tail, it takes a quite while for it to get trapped.
 
-![late_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/late_snake.gif)
+![late_snake](https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/late_snake.gif?raw=true)
 
 ---
 <a id="citations"></a>
