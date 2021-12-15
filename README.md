@@ -10,4 +10,4 @@ To run the game, navigate to the folder `snake-game` in terminal and run `python
 
 #### Website
 
-For more detail, check out our [website](https://olincollege.github.io/snake-game/).
+For more detail, check out my [website](https://lila-smith.github.io/snake-game-reinforcement-learning/).
