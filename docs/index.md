@@ -1,6 +1,6 @@
 # Reinforcement Learning with the Snake Game
 
-(This blog post is meant to be part helpful resource and part explanation of my learning. Going into this project, I had no prior knowledge of reinforcement learning. If you would like resources that I found helpful, please view the [citations section](#citations). If you want to play [Alex](https://github.com/a-matsoukas) and [I](https://github.com/lila-smith)'s snake game, follow the [directions](#directions). You can view my code [here](https://github.com/lila-smith/snake-game-reinforcement-learning).)
+(This blog post is meant to be part helpful resource and part explanation of my learning. Going into this project, I had no prior knowledge of reinforcement learning. If you would like resources that I found helpful, please view the [citations section](#citations). I made the original game with [Alex](https://github.com/a-matsoukas). If you want to play our snake game, follow the [directions](#directions). You can view my reinforcement learning code [here](https://github.com/lila-smith/snake-game-reinforcement-learning).)
 
 ---
 
