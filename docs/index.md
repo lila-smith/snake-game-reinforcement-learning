@@ -16,10 +16,10 @@ RL is neither supervised nor unsupervised learning. There is no dataset necessar
 
 You get to choose what information you tell the agent, and you need to choose wisely!
 
-In the snake game for an 18 by 18 board and a length one snake, there are 324 choices for the location of the snake square and 323 choices for the location of the apple square. Together, this means there are 104,652 possible configurations of the board. Clearly...this cannot be our space. This would require a lot memory and not end up being super useful, since it would take tens of thousands of games to let the agent have enough experience with each state.
+In the snake game for an 18 by 18 board and a length one snake, there are 324 choices for the location of the snake square and 323 choices for the location of the apple square. Together, this means there are 104,652 possible configurations of the board. Clearly...this cannot be our space. This would require a lot of memory and not end up being super useful, since it would take tens of thousands of games to let the agent have enough experience with each state.
 
 
-Instead, let's look at scenario:
+Instead, let's look at a scenario:
 
 <p align="center">
  <img width="300" height="300" src="https://github.com/lila-smith/snake-game-reinforcement-learning/blob/main/docs/down_snake.png?raw=true">
@@ -28,10 +28,10 @@ Instead, let's look at scenario:
 
 These two environments share a lot in common. While one has a snake facing up and the other down, they both have no walls surrounding them, and there is an apple two squares to *the snake's* right. 
 
-The optimal action in both scenarios is clearly to turn right and they are basically just rotations of one another, so it makes sense that we should group these two together. Anything that the snake learns about one of these scenarios is relevant to the other scenario.
+The optimal action in both scenarios is clearly to turn right, and they are basically just rotations of one another. It makes sense that we should group these two together: anything that the snake learns about one of these scenarios is relevant to the other scenario.
 
 To reduce the dimensions of the state space, let's think about what factors are important:
-* Will it bump into wall and die?
+* Will it bump into the wall and die?
 * Will it approach the apple?
 * Will it hit its tail and die?
 
@@ -57,7 +57,7 @@ In the intro, I stated that you choose what sort of positive or negative reward 
 * Moving toward apple (small positive)
 * Moving away from apple (small negative)
 
-You may at first think that it is unnecessary to reward the snake for moving toward the apple, but that is the thought of someone who has not watched their snake move about board for 10 minutes during game 100 at length one—never dying—but also never touching the apple. It will, of course, repeat this snail pace at length two and onward after it finally accidentally bumps into an apple, don't worry.
+You may, at first, think that it is unnecessary to reward the snake for moving toward the apple, but that is the thought of someone who has not watched their snake move about board for 10 minutes during game 100 at length one—never dying—but also never touching the apple. It will, of course, repeat this snail pace at length two and onward after it finally accidentally bumps into an apple, don't worry.
 
 
 So how does the snake store its history of rewards to learn from them?
